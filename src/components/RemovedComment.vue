@@ -1,5 +1,5 @@
 <template>
-<li v-for="removeComment in removeComments" :key="removeComment.id" class ="styleRemovedComment">
+<li class ="styleRemovedComment">
     <div class ="styleRemovedCommentCenter">
       <div class ="styleRemovedCommentCenterTop">
         <div>
@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class ="styleCommentRight">
-      <img src="./img/add.png" @click="addReverseComment(removeComment.id)" class ="styleButtonRemove">
+      <img src="../assets/add.png" @click="addReverseComment(removeComment.id)" class ="styleButtonRemove">
     </div>
 </li>    
 </template>
@@ -26,6 +26,14 @@
 <script>
 export default {
   name: 'RemovedComment',
+  props: ['removeComment', 'removed-comments'],
+  methods:{
+    addReverseComment(removeCommentId){
+      console.log(removeCommentId);
+      
+      this.$emit('onAddReversesComment', removeCommentId);
+    }
+  }
 }
 </script>
 
