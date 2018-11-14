@@ -1,8 +1,8 @@
 <template>
-  <li class ="styleComment">
-      <img src="../assets/usuario.jpeg" class ="styleAvatar"> 
-    <div class ="styleCommentCenter">
-      <div class ="styleCommentCenterTop">
+  <li class ="list__item">
+      <img src="../assets/usuario.jpeg" class ="avatar__img"> 
+    <div class ="list__item_center">
+      <div class ="list__item_center_top">
         <div >
           {{ comment.name }}
         </div>
@@ -14,65 +14,31 @@
             {{ comment.date.minutes }}
           </div>
       </div>
-      <div class="styleCommentCenterBottom">
+      <div class="list__item_center_bottom">
         {{ comment.comment }}
       </div>
     </div>
-    <div class ="styleCommentRight">
-      <img src="../assets/remove.png" @click="removeComment(comment.id)" class ="styleButtonRemove">
+    <div class ="list__item_right">
+      <img src="../assets/remove.png" @click="removeComment(comment.id)" class ="list__item_button">
     </div>
   </li>
 </template>
 
 <script>
 export default {
-  name: 'AddedComment',
-  props: ['comment', 'added-comments'], 
-  methods:{
+  name: "AddedComment",
+  props: ["comment", "added-comments"],
+  methods: {
     removeComment(commentId) {
-      this.$emit('onRemoveComment', commentId);
+      this.$emit("onRemoveComment", commentId);
     }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-  .styleCommentCenterTop {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 800px
-  }
-
-  .styleCommentCenter {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    /* width: 80%; */
-  }
-
-    .styleCommentRight {
-    display: flex;
-    align-items: center;
-  }
-
-  .styleButtonRemove {
-    height: 20px;
-  }
-
-  .styleComment {
-      display: flex;
-      height: 100px;
-      justify-content: space-between;
-      padding: 0.5%;
-      border-bottom-style: solid;
-      border-bottom-width: 2px;
-      border-bottom-color: #6BCBB6
-    }
-
-    .styleAvatar {
-    width: 100px;
-  }
-
+.avatar__img {
+  width: 100px;
+}
 </style>

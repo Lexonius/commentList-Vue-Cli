@@ -1,34 +1,31 @@
 <template>
   <div id="app">
-    <!-- кастомное событие на инпуты -->
-    <div class="app__block--left">
-      <form-inputs @onInputData="addCommentHandler" />
-      <removed-comments :removed-comments="removedComments" @addReverseCommentHandler="addReverseCommentHandler"/>
-    </div>
-    <div class="app__block--rigth">
-      <!-- прокидываем в наш компонент added-comments наш массив addedComments -->
-      <added-comments :added-comments="addedComments" @removeCommentHandler="removeCommentHandler"/>
-      <add-button-comment :add-button-comment="addedComments, removedComments" />
+    <div class="wrapper">
+      <div class="appBlock appBlock_left">
+        <!-- кастомное событие на инпуты -->
+        <form-inputs @onInputData="addCommentHandler" />
+        <removed-comments :removed-comments="removedComments" @addReverseCommentHandler="addReverseCommentHandler"/>
+      </div>
+      <div class="appBlock appBlock_rigth">
+        <!-- прокидываем в наш компонент added-comments наш массив addedComments -->
+        <added-comments :added-comments="addedComments" @removeCommentHandler="removeCommentHandler"/>
+        <button @click="saveComment" class="button">save comment</button>
+      </div>      
     </div>
   </div>
 </template>
 
 <script>
-import FormInputs from './components/FormInputs.vue'
-import RemovedComments from './components/RemovedComments.vue'
-// import RemovedComment from './components/RemovedComment.vue'
-import AddedComments from './components/AddedComments.vue'
-// import AddedComment from './components/AddedComment.vue'
-import AddButtonComment from './components/AddButtonComment.vue'
+import FormInputs from "./components/FormInputs.vue";
+import RemovedComments from "./components/RemovedComments.vue";
+import AddedComments from "./components/AddedComments.vue";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    'form-inputs': FormInputs,
-    // RemovedComments,
-    'added-comments': AddedComments,
-    'removed-comments': RemovedComments,
-    'add-button-comment': AddButtonComment
+    "form-inputs": FormInputs,
+    "added-comments": AddedComments,
+    "removed-comments": RemovedComments
   },
   data() {
     return {
@@ -36,53 +33,68 @@ export default {
       addedComments: [],
       //массив с удаленными комментариями
       removedComments: []
-    }
+    };
   },
   methods: {
     addCommentHandler(comment) {
       this.addedComments.push(comment);
     },
 
-    removeCommentHandler(id){
+    removeCommentHandler(id) {
       const nowRemove = new Date();
       const commentIndex = this.addedComments.findIndex(
         a => a.id === Number(id)
       );
-      console.log(commentIndex);
-      let removeComment = this.addedComments.splice (commentIndex, 1);
+      let removeComment = this.addedComments.splice(commentIndex, 1);
       this.removedComments.push(removeComment[0]);
     },
 
-    addReverseCommentHandler(id){
+    addReverseCommentHandler(id) {
       const nowRemove = new Date();
       const commentIndex = this.removedComments.findIndex(
         a => a.id === Number(id)
       );
-      console.log(commentIndex);
-      let addReverseComment = this.removedComments.splice (commentIndex, 1);
+      let addReverseComment = this.removedComments.splice(commentIndex, 1);
       this.addedComments.push(addReverseComment[0]);
+    },
+
+    saveComment() {
+      localStorage.setItem(
+        "store",
+        JSON.stringify({
+          commList: this.addedComments,
+          commRemovedList: this.removedComments
+        })
+      );
+      alert("OK");
+    }
+  },
+  
+  created() {
+    if (localStorage.getItem("store")) {
+      let commentParse = JSON.parse(localStorage.getItem("store"));
+      this.addedComments = commentParse.commList;
+      this.removedComments = commentParse.commRemovedList;
+      console.log();
+      
     }
   }
-}
-
+};
 </script>
 
 <style>
-
 #app {
-  outline: none;
-  display: flex;
-  flex-direction: row;
-  height: 960px;
+  padding: 10%;
 }
-
-.app__block--left {
+.wrapper {
+  display: flex;
+  width: 100%;
+}
+.appBlock_left {
   width: 25%;
 }
-.app__block--rigth {
+.appBlock_rigth {
   width: 75%;
   margin-left: 1%;
 }
-
-
 </style>
